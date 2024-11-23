@@ -1,5 +1,5 @@
 # backend
 
 Переменные окружения:
-SECRET_KEY='KEY'
-DEBUG=DEBUG
+SECRET_KEY=<django key>
+DEBUG=<True or False>
