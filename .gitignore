@@ -1,0 +1,8 @@
+# system file
+.idea
+__pycache__
+
+# local file
+venv
+.env
+MyRead
