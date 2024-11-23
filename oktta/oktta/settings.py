@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = load_dotenv('DEBUG')
+DEBUG = load_dotenv('DEBUG')  # TODO: НЕ РАБОТАЕТ
 
 ALLOWED_HOSTS = []
 

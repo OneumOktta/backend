@@ -1,7 +1,6 @@
 # system file
 .idea
 __pycache__
-/oktta/db.sqlite3
 
 # local file
 venv
