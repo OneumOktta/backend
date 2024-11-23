@@ -1,9 +1,9 @@
 # system file
-venv
 .idea
 __pycache__
 /oktta/db.sqlite3
 
-# lokal file
+# local file
+venv
 .env
 MyRead
