@@ -1,6 +1,9 @@
+system
 venv
 .idea
 __pycache__
+/oktta/db.sqlite3
+
+lokal
 .env
 MyRead
-/oktta/db.sqlite3
