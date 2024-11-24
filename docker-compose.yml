@@ -1,0 +1,41 @@
+services:
+  backend-django:
+    container_name: django_back
+    networks:
+      - dev
+    depends_on:
+      db_django:
+        condition: service_healthy
+    env_file:
+      - .env
+    build:
+      context: .
+    command: bash -c "
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+  db_django:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "${CONNECT_TO_DB_LOCAL}:${DB_PORT}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USER}", "-d", "${DB_NAME}"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - dev
+
+volumes:
+  postgres_data:
+
+networks:
+  dev:
