@@ -3,21 +3,34 @@
 ---
 ## Переменные окружения (.env файл):
 ```env
-#django
+# django
 SECRET_KEY=<django key>
 DEBUG=<True or False>
 ALLOWED_HOST=<allowed hosts>
 
-# local db
+# db
 DB_ENGINE=<django engine>
-DB_USER=<db user>
 DB_PASSWORD=<db password>
-DB_HOST=localhost
-DB_PORT=<default 5432>
 DB_NAME=<db name>
+DB_PORT=<db port>
+
+## for local db
+#DB_HOST=localhost
+#DB_USER=<db user>
+
+## for docker db
+DB_HOST=db_django
+CONNECT_TO_DB_LOCAL=<connect local db>
+DB_USER=<db user>
 ```
 ---
 
-## Остальное
+## Docker
 
 ---
+### Docker command:
+> docker compose up --build - запуск docker контейнера
+
+> docker compose exec -it backend-django /bin/sh - проверка файловой систему
+
+> docker compose down - сбросить контейнер
