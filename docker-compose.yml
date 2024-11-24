@@ -16,7 +16,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./oktta:/app/oktta
+      - ./oktta:/usr/src/oktta
     restart: always
   db_django:
     image: postgres:13-alpine

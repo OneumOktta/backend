@@ -10,14 +10,14 @@ RUN apt-get update && apt-get install -y \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app/oktta
+WORKDIR /usr/src/oktta
 
-COPY req.txt /app/req.txt
+COPY req.txt ../req.txt
 
 RUN pip3 install --upgrade pip
 RUN pip3 install --no-cache-dir -r ../req.txt
 
-COPY . .
+COPY . ../
 
 ENV PYTHONPATH=/app
 ENV PYTHONDONTWRITEBYTECODE=1
