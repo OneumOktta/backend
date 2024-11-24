@@ -17,7 +17,7 @@ COPY req.txt /app/req.txt
 RUN pip3 install --upgrade pip
 RUN pip3 install --no-cache-dir -r ../req.txt
 
-COPY . /app
+COPY . .
 
 ENV PYTHONPATH=/app
 ENV PYTHONDONTWRITEBYTECODE=1
