@@ -29,6 +29,9 @@ INSTALLED_APPS = [
 
     # custom apps
     'order.apps.OrderConfig'
+    
+    # module
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
