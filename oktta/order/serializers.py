@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Order
 
 
-class OrderSerializer(serializers.Serializer):
+class OrderCreateSerializer(serializers.Serializer):
     full_name = serializers.CharField(min_length=5, max_length=100, label='ФИО')
     email = serializers.EmailField(min_length=5, max_length=254, label='Почта')
     phone = serializers.CharField(min_length=11, max_length=20, label='Номер телефона')
