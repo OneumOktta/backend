@@ -25,6 +25,11 @@ class OrderApiView(views.APIView):
             return response.Response(data={'detail': serializer.data})
 
     def post(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+
+        if pk:
+            raise exceptions.MethodNotAllowed(method='POST')
+
         serializer = OrderCreateSerializer(data=request.data)
 
         if not serializer.is_valid(raise_exception=True):
@@ -36,6 +41,9 @@ class OrderApiView(views.APIView):
 
     def patch(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
+
+        if not pk:
+            raise exceptions.MethodNotAllowed(method='PATCH')
 
         order = Order.objects.get(pk=pk)
         serializer = OrderUpdateSerializer(order, data=request.data, partial=True)
