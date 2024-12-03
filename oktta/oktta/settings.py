@@ -26,12 +26,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # custom apps
+    'users.apps.UsersConfig',
     'order.apps.OrderConfig',
     'chat.apps.ChatConfig',
     'token_key.apps.TokenKeyConfig',
-    
+
     # module
     'rest_framework',
 ]
@@ -110,3 +110,5 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'users.CustomUsers'
