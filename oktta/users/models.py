@@ -35,7 +35,6 @@ class CustomUsers(AbstractBaseUser):
                       ]
 
     email = models.EmailField(db_index=True, unique=True, max_length=254, verbose_name='Почта')
-    password = models.CharField(max_length=75, verbose_name='Пароль')
     role = models.CharField(db_index=True, max_length=15, choices=CHOICES_ROLE, default='business', verbose_name='Роль')
     user_active = models.BooleanField(choices=CHOICES_ACTIVE, default=False, verbose_name='Активирован')
     company_name = models.CharField(blank=True, max_length=100, verbose_name='Название компании')
