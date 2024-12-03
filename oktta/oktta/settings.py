@@ -26,7 +26,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',
+    # custom apps
+    'users.apps.UsersConfig',
+    'order.apps.OrderConfig',
+    'chat.apps.ChatConfig',
+    'token_key.apps.TokenKeyConfig',
+
+    # module
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
