@@ -29,6 +29,8 @@ INSTALLED_APPS = [
 
     # custom apps
     'order.apps.OrderConfig',
+    'chat.apps.ChatConfig',
+    'token_key.apps.TokenKeyConfig',
     
     # module
     'rest_framework',
