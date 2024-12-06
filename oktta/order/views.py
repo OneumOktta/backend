@@ -1,4 +1,4 @@
-from rest_framework import views, status, response, exceptions, permissions
+from rest_framework import views, status, response, exceptions
 
 from .serializers import OrderSerializer, OrderUpdateSerializer
 from .models import Order
