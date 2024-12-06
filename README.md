@@ -8,6 +8,14 @@ SECRET_KEY=<django key>
 DEBUG=<True or False>
 ALLOWED_HOST=<allowed hosts>
 
+# email
+EMAIL_BACKEND=<django path>
+EMAIL_HOST=<host mail>
+EMAIL_PORT=<port mail>
+EMAIL_USE_SSL=<ssl mail>
+EMAIL_HOST_USER=<your mail>
+EMAIL_HOST_PASSWORD=<smtp password>
+
 # db
 DB_ENGINE=<django engine>
 DB_PASSWORD=<db password>
@@ -34,3 +42,13 @@ DB_USER=<db user>
 > docker compose exec -it backend-django /bin/sh - проверка файловой систему
 
 > docker compose down - сбросить контейнер
+---
+## EMAIL SMTP
+
+---
+
+***[Ссылка на создание почты](https://help.mail.ru/mail/mailer/2fa/)***
+
+Пароль необходимо скопировать и вставить в файл .env в переменную EMAIL_HOST_PASSWORD
+
+***[Ссылка на получение дополнительной информации](https://help.mail.ru/mail/mailer/popsmtp/)***
