@@ -1,6 +1,6 @@
 from rest_framework import views, status, response, exceptions, permissions
 
-from .serializers import OrderCreateSerializer, OrderUpdateSerializer
+from .serializers import OrderSerializer, OrderUpdateSerializer
 from .models import Order
 
 
@@ -15,13 +15,13 @@ class OrderApiView(views.APIView):
         if pk:
             try:
                 order = Order.objects.get(pk=pk)
-                serializer = OrderCreateSerializer(order)
+                serializer = OrderSerializer(order)
                 return response.Response(data={'detail': serializer.data})
             except Order.DoesNotExist:
                 return response.Response(data={'detail': 'data does not found'}, status=status.HTTP_404_NOT_FOUND)
         else:
             order = Order.objects.all()
-            serializer = OrderCreateSerializer(order, many=True)
+            serializer = OrderSerializer(order, many=True)
             return response.Response(data={'detail': serializer.data})
 
     def post(self, request, *args, **kwargs):

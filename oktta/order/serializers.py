@@ -3,12 +3,12 @@ from rest_framework import serializers
 from .models import Order
 
 
-class OrderCreateSerializer(serializers.Serializer):
-    full_name = serializers.CharField(min_length=5, max_length=100, label='ФИО')
-    email = serializers.EmailField(min_length=5, max_length=254, label='Почта')
-    phone = serializers.CharField(min_length=11, max_length=20, label='Номер телефона')
-    company_name = serializers.CharField(max_length=255, label='Название компании')
-    site = serializers.URLField(max_length=255, label='Сайт')
+class OrderSerializer(serializers.Serializer):
+    full_name = serializers.CharField(min_length=5, max_length=100)
+    email = serializers.EmailField(min_length=5, max_length=254)
+    phone = serializers.CharField(min_length=11, max_length=20)
+    company_name = serializers.CharField(max_length=255)
+    telegram = serializers.BooleanField()
     date_created = serializers.DateTimeField(read_only=True)
     status = serializers.BooleanField(read_only=True)
 
@@ -21,7 +21,7 @@ class OrderUpdateSerializer(serializers.Serializer):
     email = serializers.EmailField(read_only=True, min_length=5, max_length=254, label='Почта')
     phone = serializers.CharField(read_only=True, min_length=11, max_length=20, label='Номер телефона')
     company_name = serializers.CharField(read_only=True, max_length=255, label='Название компании')
-    site = serializers.URLField(read_only=True, max_length=255, label='Сайт')
+    telegram = serializers.BooleanField(read_only=True)
     date_created = serializers.DateTimeField(read_only=True)
     status = serializers.BooleanField(required=True)
 

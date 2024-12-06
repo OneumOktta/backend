@@ -15,6 +15,7 @@ class Order(models.Model):
     company_name = models.CharField(max_length=255, verbose_name='Название компании')
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     status = models.BooleanField(default=True, choices=STATUS_CHOICES, verbose_name='Статус')
+    telegram = models.BooleanField(default=False, verbose_name='Телеграм')
 
     def __str__(self):
         return f'{self.full_name} - {self.email}({self.phone})'
