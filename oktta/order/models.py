@@ -13,7 +13,6 @@ class Order(models.Model):
     email = models.EmailField(db_index=True, unique=True, max_length=254, verbose_name='Почта')
     phone = models.CharField(unique=True, max_length=20, verbose_name='Номер телефона')
     company_name = models.CharField(max_length=255, verbose_name='Название компании')
-    site = models.URLField(max_length=255, verbose_name='Сайт')
     date_created = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     status = models.BooleanField(default=True, choices=STATUS_CHOICES, verbose_name='Статус')
 
