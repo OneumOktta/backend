@@ -14,7 +14,7 @@ def email_sender(sender, instance: Order, created, **kwargs):
     template_name = 'order/order_mail.html'
     subject = 'You have new Buyer'
     email = instance.email
-    context = {'phone': instance.phone, 'full_name': instance.full_name}
+    context = {'phone': instance.phone, 'full_name': instance.full_name, 'key': instance.token_auth}
     html_content = render_to_string(template_name=template_name, context=context)
 
     message = EmailMultiAlternatives(subject=subject, to=[email, ])
