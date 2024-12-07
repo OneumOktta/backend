@@ -6,11 +6,11 @@ from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 
 
 class ManagerBase(BaseUserManager):
-    def create_user(self, email, password=None):
+    def create_user(self, email, password=None, **kwargs):
         if not email:
             return ValueError('Users must have an email address')
 
-        user = self.model(email=self.normalize_email(email))
+        user = self.model(email=self.normalize_email(email), **kwargs)
 
         user.set_password(password)
         user.save(using=self._db)
