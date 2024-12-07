@@ -1,4 +1,6 @@
-from rest_framework import views, status, response, exceptions
+from rest_framework import views, status, response, exceptions, permissions
+
+from oktta.permissions import IsAdministrator
 
 from .serializers import OrderSerializer, OrderUpdateSerializer
 from .models import Order
@@ -6,11 +8,23 @@ from .models import Order
 
 class OrderApiView(views.APIView):
     """API для создания, получения и изменения заявок"""
-    # TODO когда модель User будет готова, сделать permission, что бы только user с ролью администратора мог изменять
-    # permission_classes = [permissions.IsAuthenticated]
+    def get_permissions(self):
+        """Доступ к API в зависимости от метода"""
+        method = self.request.method
+
+        if method == 'GET':
+            permission_classes = [IsAdministrator, ]
+        elif method == 'POST':
+            permission_classes = []
+        elif method == 'PATCH':
+            permission_classes = [IsAdministrator, ]
+        else:
+            permission_classes = [permissions.IsAuthenticated, ]
+
+        return [permission() for permission in permission_classes]
 
     def get(self, request, *args, **kwargs):
-        """Только для роли (administrator)"""
+        """Получение заявки или список заявок. Доступно только для роли (administrator)"""
         pk = kwargs.get('pk')
 
         if pk:
@@ -21,12 +35,12 @@ class OrderApiView(views.APIView):
             except Order.DoesNotExist:
                 return response.Response(data={'detail': 'data does\'t found'}, status=status.HTTP_404_NOT_FOUND)
         else:
-            order = Order.objects.all()
-            serializer = OrderSerializer(order, many=True)
+            orders = Order.objects.all()
+            serializer = OrderSerializer(orders, many=True)
             return response.Response(data={'detail': serializer.data})
 
     def post(self, request, *args, **kwargs):
-        """Для всех"""
+        """Создание заявки. Для всех ролей"""
         pk = kwargs.get('pk')
 
         if pk:
@@ -39,7 +53,7 @@ class OrderApiView(views.APIView):
         return response.Response(data={'detail': serializer.data}, status=status.HTTP_201_CREATED)
 
     def patch(self, request, *args, **kwargs):
-        """Только для роли (administrator)"""
+        """Частичное изменение заявки (только поле status). Доступно только для роли (administrator)"""
         pk = kwargs.get('pk')
 
         if not pk:
