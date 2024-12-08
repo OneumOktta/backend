@@ -1,0 +1,302 @@
+openapi: 3.0.0
+info:
+  title: Oneum
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:8000/
+    description: Oneum server
+paths:
+  /api/order/:
+    get:
+      summary: Метод по получению списка заявок
+      tags:
+        - Заявки
+      description: Пример вывода данных
+      security:
+        - JWT: []
+      responses:
+        '200':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
+        'default':
+          description: Отрицательный ответ от сервера
+          content:
+            application/json:
+              examples:
+                500:
+                  value: Internal server error
+    post:
+      summary: Метод по отправки заявки
+      description: Пример отправки данных
+      tags:
+        - Заявки
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderPost'
+      responses:
+        '201':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    $ref: '#/components/schemas/Order'
+        'default':
+          description: Отрицательные ответы от сервера
+          content:
+            application/json:
+              examples:
+                405:
+                  value: method not allowed
+                500:
+                  value: Internal Server Error
+  /api/order/{pk}:
+    get:
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          description: ID заявки
+          schema:
+            type: integer
+            format: int64
+      summary: Метод по получению детальной информации о заявке
+      tags:
+        - Заявки
+      description: Пример вывода данных
+      operationId: GetOrderPk
+      security:
+        - JWT: []
+      responses:
+        '200':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    $ref: '#/components/schemas/Order'
+        'default':
+          description: Отрицательный ответ от сервера
+          content:
+            application/json:
+              examples:
+                404:
+                  value: {detail: data does't found}
+                500:
+                  value: Internal server error
+    patch:
+      tags:
+        - Заявки
+      summary: Метод по изменению заявки
+      description: Пример входных данных
+      security:
+        - JWT: []
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          description: ID заявки
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderPatch'
+      responses:
+        '201':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    $ref: '#/components/schemas/Order'
+        'default':
+          description: Отрицательные ответы от сервера
+          content:
+            application/json:
+              examples:
+                400:
+                  value: {detail: data does't found}
+                404:
+                  value: {detail: data does't found}
+                405:
+                  value: Method Not Allowed
+                500:
+                  value: Internal Server Error
+  /api/admin_create_user:
+    get:
+      parameters:
+        - name: key
+          in: query
+          required: true
+          description: Токен из модели Order (token_auth)
+          schema:
+            type: string
+            format: uuid
+      security:
+        - JWT: []
+      summary: Создание пользователя администратором
+      description: Пример ввода данных
+      tags:
+        - Пользователь
+      responses:
+        '201':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              example:
+                detail: 'vasiliy_pypkin@mail.ru was created'
+        'defaults':
+          description: Отрицательный ответ от сервера
+          content:
+            application/json:
+              examples:
+                400:
+                  value: One is [token does\'t found, order bad token or user was created, user can\'t created (error)]
+                500:
+                  value: Internal Server Error
+components:
+  schemas:
+    Order:
+      type: object
+      required:
+        - full_name
+        - email
+        - token_auth
+        - phone
+        - company_name
+        - date_created
+        - status
+        - telegram
+      properties:
+        full_name:
+          type: string
+          example: 'Василий Пупкин'
+        email:
+          type: string
+          format: email
+          example: 'vasiliy_pypkin@mail.ru'
+        toke_auth:
+          type: string
+          format: uuid
+          example: 'd46a366f-48a1-401a-a6d3-3762299b62a8'
+        phone:
+          type: string
+          example: '88005553535'
+        company_name:
+          type: string
+          example: 'ООО "ЧКО"'
+        data_created:
+          type: string
+          format: date-time
+          example: '2024-12-08 10:02:48.152 +0300'
+        status:
+          type: boolean
+          example: True
+        telegram:
+          type: boolean
+          example: False
+    OrderPost:
+      type: object
+      required:
+        - full_name
+        - email
+        - phone
+        - company_name
+        - telegram
+      properties:
+        full_name:
+          type: string
+          example: 'Василий Пупкин'
+        email:
+          type: string
+          format: email
+          example: 'vasiliy_pypkin@mail.ru'
+        phone:
+          type: string
+          example: '88005553535'
+        company_name:
+          type: string
+          example: 'ООО "ЧКО"'
+        telegram:
+          type: boolean
+          example: False
+    OrderPatch:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: boolean
+          example: False
+    User:
+      type: object
+      required:
+        - email
+        - role
+        - user_active
+        - company_name
+        - name
+        - phone
+        - telegram
+        - created
+        - updated
+      properties:
+        email:
+          type: string
+          format: email
+          example: 'vasiliy_pypkin@mail.ru'
+        role:
+          type: string
+          enum:
+            - 'administrator'
+            - 'business'
+            - 'manager'
+        user_active:
+          type: boolean
+          example: False
+        company_name:
+          type: string
+          example: 'ООО "ЧКО"'
+        name:
+          type: string
+          example: 'Василий Пупкин'
+        phone:
+          type: string
+          example: '88005553535'
+        telegram:
+          type: boolean
+          example: False
+        created:
+          type: string
+          format: date-time
+          example: '2024-12-08 10:02:48.152 +0300'
+        updated:
+          type: string
+          format: date-time
+          example: '2024-12-08 10:02:48.152 +0300'
+  securitySchemes:
+    JWT:
+      type: apiKey
+      in: header
+      name: Authorization

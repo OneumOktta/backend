@@ -29,7 +29,7 @@ class AdminCreateUserApiView(views.APIView):
 
         try:
             order = Order.objects.get(token_auth=token_auth, status=True)
-        except Order.DoesNotExists:
+        except Order.DoesNotExist:
             return response.Response(data={'detail': 'order bad token or user was created'}, status=status.HTTP_400_BAD_REQUEST)
 
         user_data = {
@@ -47,7 +47,7 @@ class AdminCreateUserApiView(views.APIView):
             order.status = False
             order.save()
         except Exception as e:
-            return response.Response(data={'detail': f'user can\'t created ({str(e)})'})
+            return response.Response(data={'detail': f'user can\'t created ({str(e)})'}, status=status.HTTP_400_BAD_REQUEST)
 
         self.user_signal.send(sender='send_user_mail', user_data=user_data)
 

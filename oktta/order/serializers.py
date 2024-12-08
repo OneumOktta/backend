@@ -10,6 +10,7 @@ class OrderSerializer(serializers.Serializer):
     phone = serializers.CharField(min_length=11, max_length=20)
     company_name = serializers.CharField(max_length=255)
     telegram = serializers.BooleanField(required=False)
+    token_auth = serializers.UUIDField(read_only=True)
     date_created = serializers.DateTimeField(read_only=True)
     status = serializers.BooleanField(read_only=True)
 
@@ -24,6 +25,7 @@ class OrderUpdateSerializer(serializers.Serializer):
     phone = serializers.CharField(read_only=True, min_length=11, max_length=20, label='Номер телефона')
     company_name = serializers.CharField(read_only=True, max_length=255, label='Название компании')
     telegram = serializers.BooleanField(read_only=True)
+    token_auth = serializers.UUIDField(read_only=True)
     date_created = serializers.DateTimeField(read_only=True)
     status = serializers.BooleanField(required=True)
 
