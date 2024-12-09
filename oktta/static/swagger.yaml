@@ -63,7 +63,7 @@ paths:
                   value: method not allowed
                 500:
                   value: Internal Server Error
-  /api/order/{pk}:
+  /api/order/{pk}/:
     get:
       parameters:
         - name: pk
