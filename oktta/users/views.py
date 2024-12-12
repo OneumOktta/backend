@@ -58,6 +58,9 @@ class UserApiView(views.APIView):
     def get_permissions(self):
         method = self.request.method
 
+        if method == 'POST':
+            return []
+
     def get(self, request, *args, **kwargs):
         pass
 
