@@ -52,3 +52,20 @@ class AdminCreateUserApiView(views.APIView):
         self.user_signal.send(sender='send_user_mail', user_data=user_data)
 
         return response.Response(data={'detail': f'{user.email} was created'}, status=status.HTTP_201_CREATED)
+
+
+class UserApiView(views.APIView):
+    def get_permissions(self):
+        method = self.request.method
+
+    def get(self, request, *args, **kwargs):
+        pass
+
+    def post(self, request, *args, **kwargs):
+        pass
+
+    def patch(self, request, *args, **kwargs):
+        pass
+
+    def delete(self, request, *args, **kwargs):
+        pass
