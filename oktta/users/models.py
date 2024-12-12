@@ -43,6 +43,7 @@ class CustomUsers(AbstractBaseUser):
     telegram = models.BooleanField(db_index=True, default=False, verbose_name='Телеграм')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     updated = models.DateTimeField(auto_now=True, verbose_name='Время изменения')
+    accepted_rule = models.BooleanField(verbose_name='Политика конфиденциальности')
 
     objects = ManagerBase()
 
