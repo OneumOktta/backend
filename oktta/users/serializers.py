@@ -9,16 +9,12 @@ User = get_user_model()
 
 
 class UserRegistrationSerializer(serializers.Serializer):
-    is_view = None
+    is_view = False
 
     email = serializers.EmailField(min_length=10, max_length=254)
     password = serializers.CharField()
     company_name = serializers.CharField(min_length=5, max_length=100)
     accepted_rule = serializers.BooleanField()
-
-    def __init__(self, *args, **kwargs):
-        is_view = False
-        super().__init__(*args, **kwargs)
 
     def create(self, validated_data):
         if not validated_data.get('accepted_rule'):
