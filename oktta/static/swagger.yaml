@@ -175,6 +175,63 @@ paths:
                   value: One is [token does\'t found, order bad token or user was created, user can\'t created (error)]
                 500:
                   value: Internal Server Error
+  /api/registration/:
+    get:
+      parameters:
+        - name: token
+          in: query
+          required: true
+          description: Токен из модели UserRegister (register_token)
+          schema:
+            type: string
+            format: uuid
+      summary: Создание пользователя, перейдя по ссылке из почты
+      description: Пример входных данных
+      tags:
+        - Пользователь
+      responses:
+        '201':
+          description: Успешный ответ от сервера
+          content:
+            application/json:
+              example:
+                success: 'User was created'
+        'defaults':
+          description: Отрицательные ответ от сервера
+          content:
+            application/json:
+              examples:
+                400:
+                  value: {'error': ['token does"t found', 'user does"t found', 'Accept the rules']}
+                500:
+                  value: 'Internal Server Error'
+    post:
+      summary: Метод по регистрации пользователя
+      description: Пример входных данных
+      tags:
+        - Пользователь
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+      responses:
+        '201':
+          description: Успешный ответ от сервера
+          content:
+            application/json:
+              example:
+                success: 'Check mail'
+        'defaults':
+          description: Отрицательные ответы от сервера
+          content:
+            application/json:
+              examples:
+                400:
+                  value: {'error': 'Accept the rules'}
+                500:
+                  value: 'Internal Server Error'
 components:
   schemas:
     Order:
@@ -261,6 +318,7 @@ components:
         - telegram
         - created
         - updated
+        - accepted_rule
       properties:
         email:
           type: string
@@ -295,6 +353,31 @@ components:
           type: string
           format: date-time
           example: '2024-12-08 10:02:48.152 +0300'
+        accepted_rule:
+          type: boolean
+          example: True
+    UserRegistration:
+      type: object
+      required:
+        - email
+        - password
+        - company_name
+        - accepted_rule
+      properties:
+        email:
+          type: string
+          format: email
+          example: natural@gmail.com
+        password:
+          type: string
+          format: password
+          example: Tte12345st
+        company_name:
+          type: string
+          example: OOO "ЧКО"
+        accepted_rule:
+          type: boolean
+          example: True
   securitySchemes:
     JWT:
       type: apiKey
