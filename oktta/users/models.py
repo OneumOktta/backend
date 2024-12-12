@@ -1,5 +1,4 @@
-from enum import unique
-from tabnanny import verbose
+import uuid
 
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
@@ -49,6 +48,17 @@ class CustomUsers(AbstractBaseUser):
 
     REQUIRED_FIELDS = ['password', ]
     USERNAME_FIELD = 'email'
+
+    def __str__(self):
+        return f'{self.email}'
+
+
+class UserRegister(models.Model):
+    email = models.EmailField(db_index=True, unique=True, max_length=254, verbose_name='Почта')
+    password = models.CharField(verbose_name='Пароль')
+    company_name = models.CharField(max_length=100, verbose_name='Название компании')
+    accepted_rule = models.BooleanField(verbose_name='Правила конфиденциальности')
+    register_token = models.UUIDField(default=uuid.uuid4, max_length=36, verbose_name='Ссылка-токен')
 
     def __str__(self):
         return f'{self.email}'

@@ -1,12 +1,13 @@
 from django.contrib.auth import get_user_model
 from django.db.models.signals import Signal
 
-from rest_framework import views, status, response
+from rest_framework import views, status, response, exceptions
 
 from oktta.permissions import IsAdministrator
 from oktta.utils import generate_password
 from order.models import Order
 from .serializers import UserRegistrationSerializer
+from .models import UserRegister
 
 
 User = get_user_model()
@@ -59,12 +60,35 @@ class UserRegistrationApiView(views.APIView):
     def get_permissions(self):
         method = self.request.method
 
-        if method == 'POST':
+        if method == 'GET':
             return []
+        elif method == 'POST':
+            return []
+        return []
 
-    def post(self, request, *args, **kwargs):
-        user_registration_data = request.data
-        serializer = UserRegistrationSerializer(data=user_registration_data)
+    def get(self, request, *args, **kwargs):
+        token = request.GET.get('token')
+
+        if not token:
+            raise exceptions.ValidationError(detail={'error': 'token does\'t found'}, code=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user_data = UserRegister.objects.get(register_token=token)
+            data_serializer = UserRegistrationSerializer(user_data)
+        except UserRegister.DoesNotExist:
+            raise exceptions.ValidationError(detail={'error': 'user does\'t found'}, code=status.HTTP_400_BAD_REQUEST)
+
+        serializer = UserRegistrationSerializer(data=data_serializer.data)
+        serializer.is_view = True
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return response.Response(data={'success': 'User was created'})
+
+        user_data.delete()
+
+        return response.Response(data={'success': 'User was created'}, status=status.HTTP_201_CREATED)
+
+    def post(self, request, *args, **kwargs):
+        serializer = UserRegistrationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return response.Response(data={'success': 'Check mail'}, status=status.HTTP_201_CREATED)
