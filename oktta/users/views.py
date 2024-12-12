@@ -3,6 +3,8 @@ from django.db.models.signals import Signal
 
 from rest_framework import views, status, response, exceptions
 
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 from oktta.permissions import IsAdministrator
 from oktta.utils import generate_password
 from order.models import Order
@@ -92,3 +94,32 @@ class UserRegistrationApiView(views.APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return response.Response(data={'success': 'Check mail'}, status=status.HTTP_201_CREATED)
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    def post(self, request, *args, **kwargs):
+        token_response = super().post(request, *args, **kwargs)
+
+        if not token_response.status_code == 200:
+            raise exceptions.AuthenticationFailed(detail='cant authenticate', code=status.HTTP_400_BAD_REQUEST)
+
+        token_response.headers['X-Access-Token'] = token_response.data['access']
+        token_response.headers['X-Refresh-Token'] = token_response.data['refresh']
+
+        token_response.data = {'success': 'user authorization'}
+
+        return token_response
+
+
+class CustomTokenRefreshView(TokenRefreshView):
+    def post(self, request, *args, **kwargs):
+        token_response = super().post(request, *args, **kwargs)
+
+        if not token_response.status_code == 200:
+            raise exceptions.AuthenticationFailed(detail='cant authenticate', code=status.HTTP_400_BAD_REQUEST)
+
+        token_response.headers['X-Access-Token'] = token_response.data['access']
+
+        token_response.data = {'success': 'token was refreshing'}
+
+        return token_response
