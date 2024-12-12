@@ -55,15 +55,12 @@ class AdminCreateUserApiView(views.APIView):
         return response.Response(data={'detail': f'{user.email} was created'}, status=status.HTTP_201_CREATED)
 
 
-class UserApiView(views.APIView):
+class UserRegistrationApiView(views.APIView):
     def get_permissions(self):
         method = self.request.method
 
         if method == 'POST':
             return []
-
-    def get(self, request, *args, **kwargs):
-        pass
 
     def post(self, request, *args, **kwargs):
         user_registration_data = request.data
@@ -71,9 +68,3 @@ class UserApiView(views.APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return response.Response(data={'success': 'User was created'})
-
-    def patch(self, request, *args, **kwargs):
-        pass
-
-    def delete(self, request, *args, **kwargs):
-        pass

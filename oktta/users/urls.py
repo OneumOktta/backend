@@ -1,9 +1,9 @@
 from django.urls import path
 
-from .views import AdminCreateUserApiView, UserApiView
+from .views import AdminCreateUserApiView, UserRegistrationApiView
 
 
 urlpatterns = [
     path('admin_create_user/', AdminCreateUserApiView.as_view(), name='admin_create_user'),
-    path('user/', UserApiView.as_view(), name='user')
+    path('registration/', UserRegistrationApiView.as_view(), name='user')
 ]
