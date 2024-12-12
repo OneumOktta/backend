@@ -14,9 +14,9 @@ class UserRegistrationSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         if not validated_data.get('accepted_rule'):
-            raise exceptions.ValidationError(detail='Accept the rules', code=status.HTTP_400_BAD_REQUEST)
+            raise exceptions.ValidationError(detail={'error': 'Accept the rules'}, code=status.HTTP_400_BAD_REQUEST)
 
         try:
             return User.objects.create_user(**validated_data)
         except Exception as e:
-            raise exceptions.ValidationError(detail=f'{e}', code=status.HTTP_400_BAD_REQUEST)
+            raise exceptions.ValidationError(detail={'error': f'{e}'}, code=status.HTTP_400_BAD_REQUEST)

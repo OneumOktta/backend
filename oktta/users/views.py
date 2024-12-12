@@ -6,6 +6,7 @@ from rest_framework import views, status, response
 from oktta.permissions import IsAdministrator
 from oktta.utils import generate_password
 from order.models import Order
+from .serializers import UserRegistrationSerializer
 
 
 User = get_user_model()
@@ -65,7 +66,11 @@ class UserApiView(views.APIView):
         pass
 
     def post(self, request, *args, **kwargs):
-        pass
+        user_registration_data = request.data
+        serializer = UserRegistrationSerializer(data=user_registration_data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return response.Response(data={'success': 'User was created'})
 
     def patch(self, request, *args, **kwargs):
         pass
