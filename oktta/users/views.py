@@ -116,7 +116,7 @@ class CustomTokenRefreshView(TokenRefreshView):
         token_response = super().post(request, *args, **kwargs)
 
         if not token_response.status_code == 200:
-            raise exceptions.AuthenticationFailed(detail='cant authenticate', code=status.HTTP_400_BAD_REQUEST)
+            raise exceptions.AuthenticationFailed(detail='cant refreshing', code=status.HTTP_400_BAD_REQUEST)
 
         token_response.headers['X-Access-Token'] = token_response.data['access']
 

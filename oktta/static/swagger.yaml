@@ -232,6 +232,62 @@ paths:
                   value: {'error': 'Accept the rules'}
                 500:
                   value: 'Internal Server Error'
+  /api/token/:
+    post:
+      summary: Авторизация пользователя
+      description: Пример входных данных
+      tags:
+        - Пользователь
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAuthorization'
+      responses:
+        '200':
+          description: Положительный ответ от сервера, токены в headers
+          content:
+            application/json:
+              example:
+                success: 'user authorization'
+        'defaults':
+          description: Отрицательные ответ от сервера
+          content:
+            application/json:
+              examples:
+                400:
+                  value: {'detail': 'cant authenticate'}
+                500:
+                  value: Internal Server Error
+  /api/token/refresh/:
+    post:
+      summary: Обновление access токена
+      description: Пример входных данных
+      tags:
+        - Пользователь
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRefresh'
+      responses:
+        '200':
+          description: Положительные ответ от сервера, access токен в headers
+          content:
+            application/json:
+              example:
+                success: 'token was refreshing'
+        'defaults':
+          description: Отрицательные ответы от сервера
+          content:
+            application/json:
+              examples:
+                400:
+                  value: {'detail': 'cant refreshing'}
+                500:
+                  value: 'Internal Server Error'
 components:
   schemas:
     Order:
@@ -378,6 +434,28 @@ components:
         accepted_rule:
           type: boolean
           example: True
+    UserAuthorization:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: real_mail@gmail.com
+        password:
+          type: string
+          format: password
+          example: your password
+    UserRefresh:
+      type: object
+      required:
+        - refresh
+      properties:
+        refresh:
+          type: string
+          example: your refresh token
   securitySchemes:
     JWT:
       type: apiKey
