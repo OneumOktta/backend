@@ -262,6 +262,8 @@ paths:
                   value: Internal Server Error
   /api/token/refresh/:
     post:
+      security:
+        - JWT: []
       summary: Обновление access токена
       description: Пример входных данных
       tags:
