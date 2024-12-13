@@ -1,4 +1,5 @@
 # system file
+oktta/staticfiles/*
 .idea
 __pycache__
 
