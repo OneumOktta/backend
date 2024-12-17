@@ -11,5 +11,6 @@ urlpatterns = [
     path('api/', include('users.urls')),
     path('api/swagger/', TemplateView.as_view(template_name='swagger_ui.html')),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh')
+    path('api/token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
+    path('api/', include('feedback.urls'))
 ]
