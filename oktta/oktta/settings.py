@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'order.apps.OrderConfig',
     'chat.apps.ChatConfig',
     'token_key.apps.TokenKeyConfig',
-    'feedback',
+    'feedback.apps.FeedbackConfig',
 
     # module
     'rest_framework',
