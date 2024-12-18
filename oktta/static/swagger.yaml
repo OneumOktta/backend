@@ -3,8 +3,12 @@ info:
   title: Oneum
   version: 1.0.0
 servers:
+  - url: http://89.22.55.155:8000/
+    description: Host server
+  - url: http://127.0.0.1/
+    description: Host nginx
   - url: http://127.0.0.1:8000/
-    description: Oneum server
+    description: Local host server
 paths:
   /api/order/:
     get:
