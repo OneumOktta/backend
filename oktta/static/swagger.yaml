@@ -294,6 +294,81 @@ paths:
                   value: {'detail': 'cant refreshing'}
                 500:
                   value: 'Internal Server Error'
+  /api/get-user/:
+    get:
+      security:
+        - JWT: []
+      summary: Метод по получению данных
+      description: Пример данных
+      tags:
+        - Пользователь
+      responses:
+        '200':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    $ref: "#/components/schemas/User"
+        'defaults':
+          description: Отрицательные ответы от сервера
+          content:
+            application/json:
+              examples:
+                400:
+                  value: {"error": "bad request"}
+                500:
+                  value: "Internal Server Error"
+    patch:
+      security:
+        - JWT: []
+      summary: Метод по изменению профиля пользователя
+      description: Пример входных данных
+      tags:
+        - Пользователь
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPatch"
+      responses:
+        "200":
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              example:
+                success: data was changed
+        "defaults":
+          description: Отрицательные ответы от сервера
+          content:
+            application/json:
+              examples:
+                500:
+                  value: Internal Server Error
+    delete:
+      security:
+        - JWT: []
+      summary: Метод по удалению профиля
+      description: Пример входных данных
+      tags:
+        - Пользователь
+      responses:
+        "200":
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              example:
+                success: user was deleted
+        "defaults":
+          description: Отрицательные ответы от сервера
+          content:
+            application/json:
+              examples:
+                500:
+                  value: Internal Server Error
 components:
   schemas:
     Order:
@@ -418,6 +493,22 @@ components:
         accepted_rule:
           type: boolean
           example: True
+    UserPatch:
+      type: object
+      required:
+        - company_name
+        - phone
+        - telegram
+      properties:
+        company_name:
+          type: string
+          example: OOO 4KO
+        phone:
+          type: string
+          example: 88005553535
+        telegram:
+          type: boolean
+          example: false
     UserRegistration:
       type: object
       required:
