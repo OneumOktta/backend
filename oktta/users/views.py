@@ -133,8 +133,21 @@ class UserApiView(views.APIView):
 
     def get(self, request, *args, **kwargs):
         try:
-            serializer = UserSerializer(request.user)
+            user = request.user
+            serializer = UserSerializer(user)
             return response.Response(data={'detail': serializer.data}, status=status.HTTP_200_OK)
         except Exception as e:
             print(f'Error in UserApiView method GET - {e}')
             return response.Response(data={'error': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, *args, **kwargs):
+        user, data = request.user, request.data
+        serializer = UserSerializer(instance=user, data=data, partial=True)
+        serializer.is_valid()
+        serializer.save()
+
+        return response.Response(data={'success': 'data was changed'}, status=status.HTTP_200_OK)
+
+    def delete(self, request, *args, **kwargs):
+        request.user.delete()
+        return response.Response(data={'success': 'user was deleted'}, status=status.HTTP_200_OK)

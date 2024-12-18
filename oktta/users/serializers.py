@@ -33,10 +33,20 @@ class UserSerializer(serializers.Serializer):
     email = serializers.EmailField(read_only=True)
     role = serializers.CharField(read_only=True)
     user_active = serializers.BooleanField(read_only=True)
-    company_name = serializers.CharField(read_only=True)
+    company_name = serializers.CharField(max_length=100)
     name = serializers.CharField(read_only=True)
-    phone = serializers.CharField(read_only=True)
-    telegram = serializers.BooleanField(read_only=True)
+    phone = serializers.CharField(max_length=20)
+    telegram = serializers.BooleanField()
     created = serializers.DateTimeField(read_only=True)
     updated = serializers.DateTimeField(read_only=True)
     accepted_rule = serializers.BooleanField(read_only=True)
+
+    def update(self, instance, validated_data, **kwargs):
+        instance.company_name = validated_data.get('company_name', instance.company_name)
+        instance.phone = validated_data.get('phone', instance.phone)
+        instance.telegram = validated_data.get('telegram', instance.telegram)
+
+        instance.save()
+
+        return instance
+
