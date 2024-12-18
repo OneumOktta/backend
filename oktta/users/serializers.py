@@ -27,3 +27,16 @@ class UserRegistrationSerializer(serializers.Serializer):
             return User.objects.create_user(**validated_data)
         except Exception as e:
             raise exceptions.ValidationError(detail={'error': f'{e}'}, code=status.HTTP_400_BAD_REQUEST)
+
+
+class UserSerializer(serializers.Serializer):
+    email = serializers.EmailField(read_only=True)
+    role = serializers.CharField(read_only=True)
+    user_active = serializers.BooleanField(read_only=True)
+    company_name = serializers.CharField(read_only=True)
+    name = serializers.CharField(read_only=True)
+    phone = serializers.CharField(read_only=True)
+    telegram = serializers.BooleanField(read_only=True)
+    created = serializers.DateTimeField(read_only=True)
+    updated = serializers.DateTimeField(read_only=True)
+    accepted_rule = serializers.BooleanField(read_only=True)
