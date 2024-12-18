@@ -1,14 +1,14 @@
 from django.contrib.auth import get_user_model
 from django.db.models.signals import Signal
 
-from rest_framework import views, status, response, exceptions
+from rest_framework import views, status, response, exceptions, permissions
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from oktta.permissions import IsAdministrator
 from oktta.utils import generate_password
 from order.models import Order
-from .serializers import UserRegistrationSerializer
+from .serializers import UserRegistrationSerializer, UserSerializer
 from .models import UserRegister
 
 
@@ -123,3 +123,31 @@ class CustomTokenRefreshView(TokenRefreshView):
         token_response.data = {'success': 'token was refreshing'}
 
         return token_response
+
+
+class UserApiView(views.APIView):
+    def get_permissions(self):
+        method = self.request.method
+
+        return [permissions.IsAuthenticated(), ]
+
+    def get(self, request, *args, **kwargs):
+        try:
+            user = request.user
+            serializer = UserSerializer(user)
+            return response.Response(data={'detail': serializer.data}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(f'Error in UserApiView method GET - {e}')
+            return response.Response(data={'error': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, *args, **kwargs):
+        user, data = request.user, request.data
+        serializer = UserSerializer(instance=user, data=data, partial=True)
+        serializer.is_valid()
+        serializer.save()
+
+        return response.Response(data={'success': 'data was changed'}, status=status.HTTP_200_OK)
+
+    def delete(self, request, *args, **kwargs):
+        request.user.delete()
+        return response.Response(data={'success': 'user was deleted'}, status=status.HTTP_200_OK)
